@@ -1,0 +1,4 @@
+1. In utility Microservice create the Proto file. An example of the proto file is provided.
+2. After creating the proto file, build the project by running the 'clean install' command in Maven.
+3. Automatically a protobuf file will be generated just like this : 
+4. 
