@@ -1,0 +1,18 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.prospecta.mdo;
+
+
+message RuleMetaDataRequestDTO {
+	repeated int64 brIds = 1;
+}
+
+message RuleMetaDataResponseDTO {
+	string name = 1;
+	int64 age = 2; 
+}
+
+
+service RuleMetaDataService {
+	rpc getRuleMetaData(RuleMetaDataRequestDTO) returns (RuleMetaDataResponseDTO) {}
+}
