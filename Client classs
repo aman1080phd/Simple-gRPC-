@@ -1,0 +1,40 @@
+package com.prospecta.mdo.rule.transformation.grpc.client;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.prospecta.mdo.RuleMetaDataRequestDTO;
+import com.prospecta.mdo.RuleMetaDataResponseDTO;
+import com.prospecta.mdo.RuleMetaDataServiceGrpc;
+import com.prospecta.mdo.RuleMetaDataServiceGrpc.RuleMetaDataServiceBlockingStub;
+import com.prospecta.mdo.common.auth.config.GRPCConstants;
+
+import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+
+@Slf4j
+@Component
+public class RuleMetaDataClientGrpcServiceImpl {
+
+	@GrpcClient(GRPCConstants.GRPC_RULE)
+	private RuleMetaDataServiceGrpc.RuleMetaDataServiceBlockingStub ruleMetaDataServiceStub;
+	
+	public List<String> getRuleMetaData(List<Long> brIds) {
+		List<String> response = new ArrayList<>();
+		try {
+			RuleMetaDataRequestDTO request = RuleMetaDataRequestDTO.newBuilder().addAllBrIds(brIds).build();
+
+			log.info("Calling gRPC to fetch rule meta data with request: {}", request);
+			RuleMetaDataResponseDTO serverResponse = ruleMetaDataServiceStub.getRuleMetaData(request);
+			
+			response.add(serverResponse.getAge()+"");
+			response.add(serverResponse.getName());
+		} catch (Exception e) {
+			log.error("Exception while fetching rule meta data using gRPC: {}", e);
+		}
+		
+		return response;
+	}
+}
