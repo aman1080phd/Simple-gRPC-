@@ -1,0 +1,37 @@
+package com.prospecta.mdo.rule.grpc.server;
+
+import com.prospecta.mdo.RuleMetaDataRequestDTO;
+import com.prospecta.mdo.RuleMetaDataResponseDTO;
+import com.prospecta.mdo.RuleMetaDataServiceGrpc.RuleMetaDataServiceImplBase;
+import com.prospecta.mdo.common.auth.utility.annotation.GRPCAuthentication;
+
+import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.server.service.GrpcService;
+
+@Slf4j
+@GrpcService
+public class RuleMetaDataGrpcServiceImpl extends RuleMetaDataServiceImplBase{
+
+	@Override
+	@GRPCAuthentication
+	public void getRuleMetaData(RuleMetaDataRequestDTO request,
+			StreamObserver<RuleMetaDataResponseDTO> responseObserver) {
+
+		try {
+			log.info("getRuleMetaData gRPC start with request: {}", request);
+
+			RuleMetaDataResponseDTO ruleMetaDataResponse = RuleMetaDataResponseDTO.newBuilder().setName("Aman")
+					.setAge(21).build();
+
+			responseObserver.onNext(ruleMetaDataResponse);
+			responseObserver.onCompleted();
+		} catch (Exception e) {
+			log.error("Exception while fetching userDefaultPreference {}", e);
+			responseObserver.onError(e);
+		}
+
+	}
+	
+
+}
